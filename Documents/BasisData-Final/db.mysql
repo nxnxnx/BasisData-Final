@@ -1,0 +1,272 @@
+-- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: db_tugasahkir
+-- ------------------------------------------------------
+-- Server version	5.6.21
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `dosen`
+--
+
+DROP TABLE IF EXISTS `dosen`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dosen` (
+  `id_Dosen` int(11) NOT NULL,
+  `nama` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id_Dosen`),
+  UNIQUE KEY `niD` (`id_Dosen`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dosen`
+--
+
+LOCK TABLES `dosen` WRITE;
+/*!40000 ALTER TABLE `dosen` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dosen` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jadwal`
+--
+
+DROP TABLE IF EXISTS `jadwal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jadwal` (
+  `kode_mk` int(11) NOT NULL,
+  `id_dosen` int(11) NOT NULL,
+  `kode_ruang` varchar(6) NOT NULL,
+  `waktu` datetime NOT NULL,
+  KEY `kodeMK_idx` (`kode_mk`),
+  KEY `dosen_idx` (`id_dosen`),
+  KEY `ruang_idx` (`kode_ruang`),
+  CONSTRAINT `dosen` FOREIGN KEY (`id_dosen`) REFERENCES `dosen` (`id_Dosen`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `kodemk` FOREIGN KEY (`kode_mk`) REFERENCES `matkul` (`kode_mk`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `ruang` FOREIGN KEY (`kode_ruang`) REFERENCES `ruang` (`kode_ruang`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jadwal`
+--
+
+LOCK TABLES `jadwal` WRITE;
+/*!40000 ALTER TABLE `jadwal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jadwal` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jurusan`
+--
+
+DROP TABLE IF EXISTS `jurusan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jurusan` (
+  `kode_jurusan` int(11) NOT NULL,
+  `nama_jurusan` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`kode_jurusan`),
+  UNIQUE KEY `niK` (`kode_jurusan`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jurusan`
+--
+
+LOCK TABLES `jurusan` WRITE;
+/*!40000 ALTER TABLE `jurusan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jurusan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `khs`
+--
+
+DROP TABLE IF EXISTS `khs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `khs` (
+  `NIM` int(11) DEFAULT NULL,
+  `kode_mk` int(11) DEFAULT NULL,
+  `nilai` enum('A','B''C','D','E') DEFAULT NULL,
+  KEY `NIM_idx` (`NIM`),
+  KEY `Matkul_idx` (`kode_mk`),
+  CONSTRAINT `mahasiswa` FOREIGN KEY (`NIM`) REFERENCES `mahasiswa` (`NIM`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `mk` FOREIGN KEY (`kode_mk`) REFERENCES `krs` (`kode_mk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `khs`
+--
+
+LOCK TABLES `khs` WRITE;
+/*!40000 ALTER TABLE `khs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `khs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `krs`
+--
+
+DROP TABLE IF EXISTS `krs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `krs` (
+  `NIM` int(11) NOT NULL,
+  `kode_mk` int(11) NOT NULL,
+  `kode_jurusan` int(11) NOT NULL,
+  KEY `mahasiswa_idx` (`NIM`),
+  KEY `matkul_idx` (`kode_mk`),
+  KEY `jurusan_idx` (`kode_jurusan`),
+  CONSTRAINT `juru` FOREIGN KEY (`kode_jurusan`) REFERENCES `jurusan` (`kode_jurusan`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `maha` FOREIGN KEY (`NIM`) REFERENCES `mahasiswa` (`NIM`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `mat` FOREIGN KEY (`kode_mk`) REFERENCES `matkul` (`kode_mk`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `krs`
+--
+
+LOCK TABLES `krs` WRITE;
+/*!40000 ALTER TABLE `krs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `krs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mahasiswa`
+--
+
+DROP TABLE IF EXISTS `mahasiswa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mahasiswa` (
+  `NIM` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(45) DEFAULT NULL,
+  `jenis_kelamin` enum('M','F') DEFAULT NULL,
+  `angkatan` year(4) DEFAULT NULL,
+  `kode_jurusan` int(11) DEFAULT NULL,
+  `alamat` varchar(45) DEFAULT NULL,
+  `id_wali` int(11) NOT NULL,
+  `semester` int(11) DEFAULT NULL,
+  PRIMARY KEY (`NIM`),
+  UNIQUE KEY `nip_UNIQUE` (`NIM`),
+  KEY `IDwali_idx` (`id_wali`),
+  KEY `jurusa_idx` (`kode_jurusan`),
+  CONSTRAINT `jurusa` FOREIGN KEY (`kode_jurusan`) REFERENCES `jurusan` (`kode_jurusan`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `wali` FOREIGN KEY (`id_wali`) REFERENCES `wali` (`id_wali`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mahasiswa`
+--
+
+LOCK TABLES `mahasiswa` WRITE;
+/*!40000 ALTER TABLE `mahasiswa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mahasiswa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `matkul`
+--
+
+DROP TABLE IF EXISTS `matkul`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `matkul` (
+  `kode_mk` int(11) NOT NULL,
+  `nama_mk` varchar(45) DEFAULT NULL,
+  `id_dosen` int(11) DEFAULT NULL,
+  `SKS` int(1) DEFAULT NULL,
+  PRIMARY KEY (`kode_mk`),
+  UNIQUE KEY `nip_UNIQUE` (`kode_mk`),
+  KEY `Iddosen_idx` (`id_dosen`),
+  CONSTRAINT `dos` FOREIGN KEY (`id_dosen`) REFERENCES `dosen` (`id_Dosen`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `matkul`
+--
+
+LOCK TABLES `matkul` WRITE;
+/*!40000 ALTER TABLE `matkul` DISABLE KEYS */;
+/*!40000 ALTER TABLE `matkul` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ruang`
+--
+
+DROP TABLE IF EXISTS `ruang`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ruang` (
+  `kode_ruang` varchar(6) NOT NULL,
+  PRIMARY KEY (`kode_ruang`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ruang`
+--
+
+LOCK TABLES `ruang` WRITE;
+/*!40000 ALTER TABLE `ruang` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ruang` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `wali`
+--
+
+DROP TABLE IF EXISTS `wali`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `wali` (
+  `id_wali` int(11) NOT NULL,
+  `nama` varchar(45) DEFAULT NULL,
+  `alamat` varchar(45) DEFAULT NULL,
+  `no_telepon` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id_wali`),
+  UNIQUE KEY `niw_UNIQUE` (`id_wali`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `wali`
+--
+
+LOCK TABLES `wali` WRITE;
+/*!40000 ALTER TABLE `wali` DISABLE KEYS */;
+/*!40000 ALTER TABLE `wali` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-06-24 10:32:30
